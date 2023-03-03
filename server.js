@@ -14,9 +14,9 @@ app.get('/', function (req, res) {
 });
 // connection configurations
 var dbConn = mysql.createConnection({
-	host: 'localhost',
-	user: 'root',
-	password: 'Ghanu@123',
+	host: 'audio-analysis.cypyfxrlps1u.ap-south-1.rds.amazonaws.com',
+	user: 'admin',
+	password: 'Spea2lineAudi0Ana',
 	database: 'audio_analysis_reports',
 	insecureAuth : false
 });
@@ -24,7 +24,7 @@ var dbConn = mysql.createConnection({
 dbConn.connect(); 
 
 app.get('/reports', function (req, res) {
-	dbConn.query('SELECT * FROM audio_reports', function (error, results, fields) {
+	dbConn.query('SELECT * FROM audio_reports ORDER BY report_id DESC', function (error, results, fields) {
 	if (error) throw error;
 		return res.send({ error: false, data: results, message: 'Reports List.' });
 	});
