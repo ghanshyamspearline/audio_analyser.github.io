@@ -2,7 +2,7 @@ var _config = null;
 var s3;
 var bucketName = "audio-analyzer";
 var bucketRegion = "ap-south-1";
-var API_URL = "http://localhost:3000";
+var API_URL = "https://audio-analyser-web-service.onrender.com";
 document.addEventListener("DOMContentLoaded", function () {
   console.log("document is ready. I can sleep now");
   AWS.config.update({
