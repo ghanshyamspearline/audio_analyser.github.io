@@ -36,16 +36,19 @@ const uploadAudio = () => {
   var files = document.getElementById("_audioFile").files;
   if (files) {
     var file = files[0];
+    var _timestamp = Number(new Date());
+    var _fileId = makeid(10);
+
     var fileName =
-      Number(new Date()) + "_" + makeid(10) + "." + file.name.split(".").pop();
-    var filePath = "new/" + fileName;
-    var fileUrl = "https://" + bucketRegion + ".amazonaws.com/" + filePath;
+      _timestamp + "_" + _fileId + "." + file.name.split(".").pop();
+
+    var fileUrl = "https://" + bucketName + ".s3." + bucketRegion + ".amazonaws.com/" + fileName;
     $(".btn").hide();
     $("progress").show();
     console.log("File will be available at location " + fileUrl);
     s3.upload(
       {
-        Key: filePath,
+        Key: fileName,
         Body: file,
         ACL: "public-read",
       },
@@ -54,9 +57,7 @@ const uploadAudio = () => {
           console.error("Error uploading :", err, data);
         } else {
           $(".status").html(
-            "<span class='text-success'>Successfully Uploaded!</span><br><a href='" +
-              fileUrl +
-              "' target='_blank'>Click here</a> to download file from server."
+            "<span class='text-success'>Successfully Uploaded!</span><br><h5>Keep tracking number "+_fileId+" for your refrences.</h5>"
           );
           $("progress").hide();
           $(".btn").show();
