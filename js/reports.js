@@ -7,6 +7,7 @@ if(report_id) { //check if foo parameter is set to anything
       url: apiUrl+"/report/"+report_id,
       method: "GET",
       success: function(response) {
+      $('#loading').hide(); 
       let _tableData = "";
       if(response.data) {
           const _localDate = new Date(response.data.report_created_time);
@@ -29,6 +30,7 @@ if(report_id) { //check if foo parameter is set to anything
       $('._tableData').html(_tableData);    
     },
     error: function(xhr, status, error) {
+      $('#loading').hide();
       console.log("Error:", error);
     }
   });
