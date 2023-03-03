@@ -1,4 +1,4 @@
-var apiUrl = "http://localhost:3000";
+var apiUrl = "https://audio-analyser-web-service.onrender.com";
 var urlParams = new URLSearchParams(window.location.search); //get all parameters
 var report_id = urlParams.get('report_id'); //extract the foo parameter - this will return NULL if foo isn't a parameter
 
