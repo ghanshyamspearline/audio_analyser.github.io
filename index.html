@@ -1,406 +1,55 @@
-<title>Audio Analyser Tool by Spearline</title>
-<!-- Font Awesome -->
-<link
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-  rel="stylesheet"
-/>
-<!-- Google Fonts -->
-<link
-  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-  rel="stylesheet"
-/>
-<!-- MDB -->
-<link
-  href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css"
-  rel="stylesheet"
-/>
-<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1306.0.min.js"></script>
-<script
-  type="text/javascript"
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-></script>
-<section id="_config">
-  <div
-    class="mask d-flex align-items-center h-100"
-    style="background-color: #d6d6d6"
-  >
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-          <div class="card" style="border-radius: 1rem">
-            <div class="card-body text-center">
-              <h4><i class="fas fa-microphone"></i> Audio Analyser Tool</h4>
-              <div class="status fw-light"></div>
-              <div class="form-outline mb-4">
-                <input
-                  type="file"
-                  id="_audioFile"
-                  class="form-control form-control-lg"
-                  accept="audio/mp3,audio/*"
-                />
-              </div>
-              <button class="btn" onclick="analyzeAudio()">Analyse</button>
-              <button class="btn btn-success" onclick="viewReports()">
-                VIEW REPORTS
-              </button>
-              <progress
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+	<link href="css/sign-in.css" rel="stylesheet">
+	<title>Spearline Audio Analysis Tool</title>
+</head>
+<body>
+	<div class="container">
+		<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+			<a href="home.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+				<svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+				<span class="fs-4">
+					<img src="images/logo.png" height="32" width="auto">
+				</span>
+			</a>
+
+			<ul class="nav nav-pills">
+				<li class="nav-item"><a href="home.html" class="nav-link active" aria-current="page">Home</a></li>
+				<li class="nav-item"><a href="reports.html" class="nav-link">Reports</a></li>
+			</ul>
+		</header>
+	</div>
+	<main class="">
+		<div class="form-signin w-100 m-auto text-center">
+			<img class="mb-4" src="images/square-logo.jpg" alt="" width="auto" height="57">
+			<h1 class="h3 mb-3 fw-normal">Audio Analysis Tool</h1>
+			<div class="status fw-light"></div>
+			<div class="form-floating mb-4">
+				<input type="file" class="form-control" id="_audioFile" accept="audio/mp3,audio/*">
+				<label for="_audioFile">Audio File</label>
+			</div>
+			<div>
+				<progress
                 max="”100”"
                 value="”50”"
                 style="display: none"
               ></progress>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="_reports" style="display: none;">
-  <div
-    class="mask d-flex align-items-center h-100"
-    style="background-color: #d6d6d6"
-  >
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-          <div class="card" style="border-radius: 1rem">
-            <div class="card-body p-5 text-center">
-              <div class="col-12">
-                <div class="row">
-                  <h4><i class="fas fa-user-astronaut"></i> Reports</h4>
-                </div>
-                <div class="row">
-                  <a onclick="backToTool()" style="cursor: pointer"
-                    ><i class="fas fa-arrow-circle-left"></i> Back to Tool
-                  </a>
-                </div>
-              </div>
-              <hr />
-              <section class="mb-4">
-                <div class="card">
-                  <div class="card-body">
-                    <div class="table-responsive">
-                      <table class="table table-hover text-nowrap">
-                        <thead>
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Date and Time</th>
-                            <th scope="col">#</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">Value</th>
-                            <td>18,492</td>
-                            <td>
-                              <span
-                                class="text-success"
-                                data-mdb-toggle="modal"
-                                data-mdb-target="#exampleModal"
-                                ><i class="fas fa-eye"></i
-                              ></span>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="exampleModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
-  
->
-  <div class="modal-dialog" style="max-width: 100%;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">
-          Audio Analysis Report
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-mdb-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <section>
-          <div class="card">
-            <div class="card-header text-center">
-              <h5 class="mb-0 text-center">
-                <strong>Audio Signal Statistics</strong>
-              </h5>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-3 col-12 mb-4">
-                  <div class="card">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between px-md-1">
-                        <div class="align-self-center">
-                          <i class="fas fa-clock text-info fa-3x"></i>
-                        </div>
-                        <div class="text-end">
-                          <h3>6m 5S</h3>
-                          <p class="mb-0">Length</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-3 col-12 mb-4">
-                  <div class="card">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between px-md-1">
-                        <div class="align-self-center">
-                          <i class="fas fa-percent text-warning fa-3x"></i>
-                        </div>
-                        <div class="text-end">
-                          <h3>44.1kHz</h3>
-                          <p class="mb-0">Sample Rate</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-3 col-12 mb-4">
-                  <div class="card">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between px-md-1">
-                        <div class="align-self-center">
-                          <i class="fas fa-headset text-success fa-3x"></i>
-                        </div>
-                        <div class="text-end">
-                          <h3>2m 5s</h3>
-                          <p class="mb-0">Talk Duration</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-3 col-12 mb-4">
-                  <div class="card">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between px-md-1">
-                        <div class="align-self-center">
-                          <i
-                            class="fas fa-microphone-slash text-danger fa-3x"
-                          ></i>
-                        </div>
-                        <div class="text-end">
-                          <h3>3m 2s</h3>
-                          <p class="mb-0">Silence Duration</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-3 col-12 mb-4">
-                  <div class="card">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between px-md-1">
-                        <div>
-                          <h3 class="text-danger">60 dB</h3>
-                          <p class="mb-0">SNR Ratio</p>
-                        </div>
-                        <div class="align-self-center">
-                          <i class="fas fa-signal text-danger fa-3x"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-3 col-12 mb-4">
-                  <div class="card">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between px-md-1">
-                        <div>
-                          <h3 class="text-success">50 dB</h3>
-                          <p class="mb-0">Loudness</p>
-                        </div>
-                        <div class="align-self-center">
-                          <i class="fas fa-bullhorn text-success fa-3x"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-3 col-12 mb-4">
-                  <div class="card">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between px-md-1">
-                        <div>
-                          <h3 class="text-warning">Yes</h3>
-                          <p class="mb-0">Noise Presence</p>
-                        </div>
-                        <div class="align-self-center">
-                          <i class="fas fa-headphones text-warning fa-3x"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-3 col-12 mb-4">
-                  <div class="card">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between px-md-1">
-                        <div>
-                          <h3 class="text-info">0m 25s</h3>
-                          <p class="mb-0">Music Detection</p>
-                        </div>
-                        <div class="align-self-center">
-                          <i class="fas fa-music text-info fa-3x"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-header text-center">
-              <h5 class="mb-0 text-center">
-                <strong>Natural Language Statistics</strong>
-              </h5>
-            </div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-3 col-12 mb-4">
-                  <div class="card">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between px-md-1">
-                        <div class="align-self-center">
-                          <i class="fas fa-language text-info fa-3x"></i>
-                        </div>
-                        <div class="text-end">
-                          <h3>English</h3>
-                          <p class="mb-0">Language</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-3 col-12 mb-4">
-                  <div class="card">
-                    <div class="card-body">
-                      <div class="d-flex justify-content-between px-md-1">
-                        <div class="align-self-center">
-                          <i class="fas fa-volume-up text-warning fa-3x"></i>
-                        </div>
-                        <div class="text-end">
-                          <h3>44.1kHz</h3>
-                          <p class="mb-0">Talk Speed</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-6 col-6 mb-4">
-                  <div class=""card">
-                    <div class="card-body">
-                      <div class="accordion" id="nlpTextReports">
-                        <div class="accordion-item">
-                          <h2 class="accordion-header" id="transcription">
-                            <button
-                              class="accordion-button collapsed"
-                              type="button"
-                              data-mdb-toggle="collapse"
-                              data-mdb-target="#collapseTranslation"
-                              aria-expanded="true"
-                              aria-controls="collapseTranslation"
-                            >
-                              Transcription
-                            </button>
-                          </h2>
-                          <div id="collapseTranslation" class="accordion-collapse collapse" aria-labelledby="transcription" data-mdb-parent="#nlpTextReports">
-                            <div class="accordion-body">
-                              Schengen was an early, and highly significant, stage in the dismantling of European border barriers. European union was long and complex, encountering frequent obstacles. Indeed many predicted that it would not survive the Covid pandemic
-                            </div>
-                          </div>
-                        </div>
-                        <div class="accordion-item">
-                          <h2 class="accordion-header" id="keywordsList">
-                            <button
-                              class="accordion-button collapsed"
-                              type="button"
-                              data-mdb-toggle="collapse"
-                              data-mdb-target="#collapseKeywordsList"
-                              aria-expanded="false"
-                              aria-controls="collapseKeywordsList"
-                            >
-                              Keywords
-                            </button>
-                          </h2>
-                          <div id="collapseKeywordsList" class="accordion-collapse collapse" aria-labelledby="keywordsList" data-mdb-parent="#nlpTextReports">
-                            <div class="accordion-body">
-                              <ul class="list-group list-group-light list-group-small">
-                                <li class="list-group-item">Keyword One</li>
-                                <li class="list-group-item">Keyword Two</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="accordion-item">
-                          <h2 class="accordion-header" id="sentimentsList">
-                            <button
-                              class="accordion-button collapsed"
-                              type="button"
-                              data-mdb-toggle="collapse"
-                              data-mdb-target="#collapseSentiment"
-                              aria-expanded="false"
-                              aria-controls="collapseSentiment"
-                            >
-                              Sentiment
-                            </button>
-                          </h2>
-                          <div id="collapseSentiment" class="accordion-collapse collapse" aria-labelledby="sentimentsList" data-mdb-parent="#nlpTextReports">
-                            <div class="accordion-body">
-                              <ul class="list-group list-group-light list-group-small">
-                                <li class="list-group-item">One Word</li>
-                                <li class="list-group-item">Another Word</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">
-          <i class="fa fa-file"></i> PDF
-        </button>
-        <button type="button" class="btn btn-danger">
-          <i class="fa fa-microphone"></i> Audio
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-<script type="text/javascript" src="app.js"></script>
-<script
-  type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.js"
-></script>
+          	</div>
+			<button class="btn btn-sm btn-primary" onclick="analyzeAudio()">Upload & Analyse</button>
+		</div>
+	</main>
+	<div class="container">
+		<footer class="py-3 my-4">
+			<p class="text-center text-muted">&copy; 2023 Spearline</p>
+		</footer>
+	</div>
+	<script src="js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+	<script src="js/aws-sdk-2.1306.0.min.js"></script>
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+</body>
+</html>

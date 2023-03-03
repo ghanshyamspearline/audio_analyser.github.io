@@ -57,7 +57,7 @@ const uploadAudio = () => {
           console.error("Error uploading :", err, data);
         } else {
           $(".status").html(
-            "<span class='text-success'>Successfully Uploaded!</span><br><h5>Keep tracking number "+_fileId+" for your refrences.</h5>"
+            "<span class='text-success'>Successfully Uploaded!</span><br><h6>Keep tracking number "+_fileId+" for your refrences.</h6>"
           );
           $("progress").hide();
           $(".btn").show();
