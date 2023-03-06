@@ -22,7 +22,6 @@ if(report_id) { //check if foo parameter is set to anything
           <td>"+response.data.report_status+"</td>\
           <td><a href='"+aws_file_path+"' target='_blank'>Download</a></td>\
           <td>"+csv_file+"</td>\
-          <td><a href='reports.html?report_id="+response.data.report_file_id+"'><img src='images/eye-solid.svg' height='24px'></a></td>\
           </tr>";
       } else {
         _tableData += "No Record Found.";
@@ -57,7 +56,6 @@ if(report_id) { //check if foo parameter is set to anything
           <td>"+response.data[i].report_status+"</td>\
           <td><a href='"+aws_file_path+"' target='_blank'>Download</a></td>\
           <td>"+csv_file+"</td>\
-          <td><a href='reports.html?report_id="+response.data[i].report_file_id+"'><img src='images/eye-solid.svg' height='24px'></a></td>\
           </tr>";
         }  
       } else {
